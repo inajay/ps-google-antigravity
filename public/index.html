@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Globomantics — Product Catalog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f5f7fa;
+            color: #1a1a2e;
+        }
+
+        header {
+            background: #004370;
+            color: #fff;
+            padding: 1.5rem 2rem;
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        main {
+            max-width: 960px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 1.25rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            transition: box-shadow 0.2s;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .product-card h2 {
+            font-size: 1.05rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .product-card .category {
+            font-size: 0.8rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .product-card .price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #004a4d;
+            margin: 0.6rem 0;
+        }
+
+        .product-card p {
+            font-size: 0.9rem;
+            color: #4b5563;
+            line-height: 1.45;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Globomantics Product Catalog</h1>
+    </header>
+    <main>
+        <div class="product-grid" id="products"></div>
+    </main>
+    <script>
+        async function loadProducts() {
+            const res = await fetch("/api/products");
+            const products = await res.json();
+            const grid = document.getElementById("products");
+            grid.innerHTML = products
+                .map(
+                    (p) => `
+        <div class="product-card">
+          <span class="category">${p.category}</span>
+          <h2>${p.name}</h2>
+          <div class="price">$${p.price.toFixed(2)}</div>
+          <p>${p.description}</p>
+        </div>`
+                )
+                .join("");
+        }
+        loadProducts();
+    </script>
+</body>
+</html>
