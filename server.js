@@ -70,6 +70,7 @@ app.get("/api/products", (req, res) => {
     res.json(products);
 });
 
+
 app.listen(PORT, () => {
     console.log(`Globomantics server running at http://localhost:${PORT}`);
 });
